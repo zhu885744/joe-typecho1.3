@@ -1,0 +1,503 @@
+/* 变量定义 */
+:root {
+  --primary-color: #9400ff;
+  --secondary-color: #4096ff;
+  --success-color: #67C23A;
+  --warning-color: #d9534f;
+  --text-color: #606266;
+  --text-light: #999;
+  --border-color: #e9e9eb;
+  --background-color: #fff;
+  --hover-bg: #c9dfff;
+  --active-bg: #9400ff;
+  --box-shadow: 0px 0px 20px -5px rgba(158, 158, 158, 0.22);
+  --border-radius: 8px;
+  --transition-time: 0.3s;
+}
+
+/* 基础重置 */
+.joe_config * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.joe_config li {
+  list-style: none;
+}
+
+/* 布局结构 */
+.col-mb-12.col-tb-8.col-tb-offset-2 {
+  margin-left: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.joe_config {
+  display: flex;
+}
+
+.joe_config__aside {
+  position: sticky;
+  top: 15px;
+  width: 200px;
+  background: var(--background-color);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+
+.joe_config>form,
+.joe_config__notice {
+  position: relative;
+  display: none;
+  background: var(--background-color);
+  min-width: 0;
+  flex: 1;
+  margin-left: 15px;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+
+/* 侧边栏样式 */
+.joe_config__aside .logo {
+  color: #303133;
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #d1d1d1;
+  padding-bottom: 10px;
+}
+
+.joe_config__aside .tabs {
+  margin-bottom: 10px;
+}
+
+.joe_config__aside .tabs .item {
+  border-radius: 5px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background var(--transition-time);
+  user-select: none;
+}
+
+.joe_config__aside .tabs .item:hover {
+  background: var(--hover-bg);
+}
+
+.joe_config__aside .tabs .item.active {
+  color: #ffffff;
+  font-weight: 600;
+  background: var(--active-bg);
+}
+
+.joe_config__aside .backup input {
+  width: 180px;
+  height: 40px;
+  line-height: 40px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: opacity var(--transition-time);
+  border: none;
+  cursor: pointer;
+}
+
+.joe_config__aside .backup input:hover {
+  opacity: 0.85;
+}
+
+.joe_config__aside .backup input:nth-child(1) {
+  background: #000000;
+}
+
+.joe_config__aside .backup input:nth-child(2) {
+  background: #0011ff;
+}
+
+.joe_config__aside .backup input:nth-child(3) {
+  margin-bottom: 0;
+  background: var(--warning-color);
+}
+
+/* 表单区域样式 */
+.joe_config>form .typecho-option {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 15px;
+  background: var(--background-color);
+  border-top: 1px solid #ebebeb;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.joe_config>form .typecho-option button {
+  width: 170px;
+  height: 40px;
+  background-color: #000000;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-time);
+}
+
+.joe_config>form .typecho-option button:hover {
+  animation: pulse 1s;
+  box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+  background-color: var(--active-bg);
+}
+
+.joe_config>form .joe_content {
+  display: none;
+  padding: 15px;
+}
+
+.joe_config>form .joe_content li {
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition-time);
+}
+
+.joe_config>form .joe_content li:hover {
+  border-color: var(--secondary-color);
+}
+
+.joe_config>form .joe_content li:last-child {
+  margin-bottom: 0;
+}
+
+.joe_config>form .joe_content li .typecho-label {
+  display: block;
+  border-left: 4px solid var(--secondary-color);
+  background: #ecf5ff;
+  line-height: 26px;
+  margin-bottom: 15px;
+  padding: 5px 15px;
+  color: var(--secondary-color);
+  user-select: none;
+  border-radius: 0 4px 4px 0;
+}
+
+/* 复选框样式 */
+.joe_config input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition-time);
+}
+
+.joe_config input[type="checkbox"]:checked {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.joe_config input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.joe_config input[type="checkbox"]:hover:not(:checked) {
+  border-color: var(--secondary-color);
+}
+
+/* 单选按钮样式 */
+.joe_config input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition-time);
+}
+
+.joe_config input[type="radio"]:checked {
+  border-color: var(--secondary-color);
+}
+
+.joe_config input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.joe_config input[type="radio"]:hover:not(:checked) {
+  border-color: var(--secondary-color);
+}
+
+/* 下拉选择框样式 */
+.joe_config>form .joe_content li select {
+  min-width: 200px;
+  height: 34px;
+  line-height: 34px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  padding: 0 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23606266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  transition: all var(--transition-time);
+}
+
+.joe_config>form .joe_content li select:hover {
+  border-color: var(--secondary-color);
+}
+
+.joe_config>form .joe_content li select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2);
+}
+
+/* 多行复选框组样式 */
+.joe_config>form .joe_content li .multiline {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.joe_config>form .joe_content li .multiline:last-child {
+  margin-bottom: 0;
+}
+
+.joe_config>form .joe_content li .multiline input[type='checkbox'],
+.joe_config>form .joe_content li .multiline input[type='radio'] {
+  margin-right: 8px;
+}
+
+/* 文件上传控件样式 */
+.joe_config input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: #fafafa;
+  transition: all var(--transition-time);
+  cursor: pointer;
+}
+
+.joe_config input[type="file"]:hover {
+  border-color: var(--secondary-color);
+  background-color: #f5f7fa;
+}
+
+.joe_config input[type="file"]:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2);
+}
+
+/* 滑块控件样式 */
+.joe_config input[type="range"] {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #f0f0f0;
+  border-radius: 3px;
+  outline: none;
+}
+
+.joe_config input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--secondary-color);
+  cursor: pointer;
+  transition: all var(--transition-time);
+}
+
+.joe_config input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--secondary-color);
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-time);
+}
+
+.joe_config input[type="range"]::-webkit-slider-thumb:hover,
+.joe_config input[type="range"]::-moz-range-thumb:hover {
+  background: var(--active-bg);
+  transform: scale(1.1);
+}
+
+/* 表单元素优化 */
+.joe_config>form .joe_content li textarea,
+.joe_config>form .joe_content li input[type='text'],
+.joe_config>form .joe_content li input[type='number'],
+.joe_config>form .joe_content li input[type='url'],
+.joe_config>form .joe_content li input[type='email'] {
+  width: 100%;
+  padding: 0.625rem;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.joe_config>form .joe_content li textarea:focus,
+.joe_config>form .joe_content li input[type='text']:focus,
+.joe_config>form .joe_content li input[type='number']:focus,
+.joe_config>form .joe_content li input[type='url']:focus,
+.joe_config>form .joe_content li input[type='email']:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2);
+}
+
+.joe_config>form .joe_content li textarea {
+  height: 125px;
+  resize: vertical;
+}
+
+/* 描述文本样式 */
+.joe_config>form .joe_content li .description {
+  background: #f8f8f8;
+  color: var(--text-light);
+  padding: 10px 15px;
+  margin-top: 15px;
+  line-height: 26px;
+  border-radius: 4px;
+  word-break: break-all;
+  font-size: 14px;
+}
+
+/* 通知区域样式 */
+.joe_config__notice {
+  line-height: 28px;
+  color: var(--text-color);
+}
+
+.joe_config__notice .title {
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e4e7ed;
+  font-weight: 500;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: var(--success-color);
+}
+
+.joe_config__notice ol {
+  padding: 0 40px;
+  margin-bottom: 15px;
+}
+
+.joe_config__notice ol li {
+  list-style: decimal;
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .joe_config {
+    display: block;
+  }
+
+  .joe_config__aside {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .joe_config__aside .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ebeef5;
+    padding-bottom: 10px;
+  }
+
+  .joe_config__aside .tabs .item {
+    width: 33.33333333%;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 5px;
+  }
+
+  .joe_config__aside .backup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .joe_config__aside .backup input {
+    width: auto;
+    flex: 1;
+    margin-bottom: 0;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 5px;
+  }
+
+  .joe_config__aside .backup input:nth-child(2) {
+    margin: 0 10px;
+  }
+
+  .joe_config>form,
+  .joe_config__notice {
+    margin-left: 0;
+  }
+
+  .joe_config>form .typecho-option {
+    padding: 10px 0;
+  }
+
+  .joe_config>form .typecho-option button {
+    width: 150px;
+    height: 38px;
+    border-radius: 5px;
+  }
+
+  /* 移动端表单控件适配 */
+  .joe_config>form .joe_content li select {
+    width: 100%;
+    min-width: auto;
+  }
+}
