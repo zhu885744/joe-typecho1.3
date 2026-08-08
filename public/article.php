@@ -1,10 +1,10 @@
 <article class="joe_detail__article">
-  <?php if (!$this->hidden && $this->fields->video) : ?>
+  <?php if (!$this->hidden && isset($this->fields) && $this->fields->video) : ?>
     <div class="joe_detail__article-video">
       <div class="play">
         <div class="title">播放预览</div>
         <div class="box">
-          <iframe allowfullscreen="true" data-player="<?php $this->options->JCustomPlayer ? $this->options->JCustomPlayer() : Helper::options()->themeUrl('library/player.php?url=') ?>"></iframe>
+          <iframe allowfullscreen="true" data-player="<?php echo $this->options->JCustomPlayer ?? Helper::options()->themeUrl('library/player.php?url=') ?>"></iframe>
         </div>
       </div>
       <div class="episodes">
@@ -12,7 +12,8 @@
         <?php $video_arr = explode("\r\n", $this->fields->video); ?>
         <div class="box">
           <?php foreach ($video_arr as $item) : ?>
-            <div class="item" data-src="<?php echo explode("$", $item)[1] ?>"><?php echo explode("$", $item)[0] ?></div>
+            <?php $video_parts = explode("$", $item); ?>
+            <div class="item" data-src="<?php echo $video_parts[1] ?? '' ?>"><?php echo $video_parts[0] ?? '' ?></div>
           <?php endforeach; ?>
         </div>
       </div>

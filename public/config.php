@@ -11,7 +11,9 @@
     LAZY_LOAD: `<?php _getLazyload() ?>`,
     BIRTHDAY: `<?php $this->options->JBirthDay() ?>`,
     MOTTO: `<?php _getAsideAuthorMotto() ?>`,
-    PAGE_SIZE: `<?php $this->parameter->pageSize() ?>`
+    PAGE_SIZE: `<?php $this->parameter->pageSize() ?>`,
+    PAGE_MODE: `<?php echo $this->options->JIndex_Pagination_Mode ?? 'loadmore' ?>`,
+    CURRENT_PAGE: `<?php echo (method_exists($this, 'getCurrentPage') && $this->getCurrentPage() > 0) ? (int)$this->getCurrentPage() : 1; ?>`
   }
 </script>
 

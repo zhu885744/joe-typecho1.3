@@ -38,7 +38,7 @@
   $type = $cookie . '__typecho_notice_type';
   ?>
   <?php if (isset($_COOKIE[$notice]) && isset($_COOKIE[$type]) && ($_COOKIE[$type] == 'success' || $_COOKIE[$type] == 'notice' || $_COOKIE[$type] == 'error')) : ?>
-    Qmsg.info("<?php echo preg_replace('#\[\"(.*?)\"\]#', '$1', $_COOKIE[$notice]); ?>！")
+    Qmsg.info("<?php echo preg_replace('#\["(.*?)"\]#', '$1', htmlspecialchars($_COOKIE[$notice] ?? '', ENT_QUOTES)); ?>！")
   <?php endif; ?>
   <?php
   Typecho_Cookie::delete('__typecho_notice');

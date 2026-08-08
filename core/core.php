@@ -6,6 +6,9 @@ require_once('widget.php');
 /* 公用函数 */
 require_once('function.php');
 
+/* 评论入库前强制安全检查 */
+require_once('safe.php');
+
 /* 过滤内容函数 */
 require_once('parse.php');
 

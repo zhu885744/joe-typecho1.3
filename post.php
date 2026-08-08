@@ -26,9 +26,9 @@
           <a href="<?php $this->options->siteUrl(); ?>" class="link" title="首页">首页</a>
         </li>
         <li class="line">/</li>
-        <?php if (sizeof($this->categories) > 0) : ?>
+        <?php if (isset($this->categories) && is_array($this->categories) && !empty($this->categories)) : ?>
           <li class="item">
-            <a class="link" href="<?php echo $this->categories[0]['permalink']; ?>" title="<?php echo $this->categories[0]['name']; ?>"><?php echo $this->categories[0]['name']; ?></a>
+            <a class="link" href="<?php echo $this->categories[0]['permalink'] ?? ''; ?>" title="<?php echo $this->categories[0]['name'] ?? ''; ?>"><?php echo $this->categories[0]['name'] ?? ''; ?></a>
           </li>
           <li class="line">/</li>
         <?php endif; ?>

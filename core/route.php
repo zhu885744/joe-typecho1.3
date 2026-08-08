@@ -20,11 +20,21 @@ function _getPost($self)
     }
 
     /* 如果传入0，强制赋值1 */
-    if ($page == 0) $page = 1;
+    if ((int)$page == 0) $page = 1;
+
+    /* 计算总文章数（用于分页） */
+    $db = Typecho_Db::get();
+    $totalPosts = $db->fetchObject($db->select(array('COUNT(cid)' => 'total'))
+        ->from('table.contents')
+        ->where('table.contents.type = ?', 'post')
+        ->where('table.contents.status = ?', 'publish')
+        ->where('table.contents.created < ?', time()))->total;
+    $totalPages = ceil($totalPosts / $pageSize);
+
     $result = [];
     /* 增加置顶文章功能，通过JS判断（如果你想添加其他标签的话，请先看置顶如何实现的） */
     $sticky_text = Helper::options()->JIndexSticky;
-    if ($sticky_text && $page == 1) {
+    if ($sticky_text && (int)$page === 1) {
         $sticky_arr = explode("||", $sticky_text);
         foreach ($sticky_arr as $cid) {
             $self->widget('Widget_Contents_Post@' . $cid, 'cid=' . $cid)->to($item);
@@ -66,7 +76,13 @@ function _getPost($self)
         );
     };
 
-    $self->response->throwJson(array("data" => $result));
+    $self->response->throwJson(array(
+        "data" => $result,
+        "totalPages" => $totalPages,
+        "currentPage" => (int)$page,
+        "pageSize" => (int)$pageSize,
+        "totalPosts" => (int)$totalPosts
+    ));
 }
 
 /* 增加浏览量 已测试 √ */
@@ -82,11 +98,12 @@ function _handleViews($self)
     }
     $db = Typecho_Db::get();
     $row = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
-    if (sizeof($row) > 0) {
-        $db->query($db->update('table.contents')->rows(array('views' => (int)$row['views'] + 1))->where('cid = ?', $cid));
+    if (!empty($row) && isset($row['views'])) {
+        $db->query($db->update('table.contents')->rows(array('views' => (int)($row['views'] ?? 0) + 1))->where('cid = ?', $cid));
+        $result = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
         $self->response->throwJson(array(
             "code" => 1,
-            "data" => array('views' => number_format($db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid))['views']))
+            "data" => array('views' => number_format($result['views'] ?? 0))
         ));
     } else {
         $self->response->throwJson(array("code" => 0, "data" => null));
@@ -106,20 +123,21 @@ function _handleAgree($self)
         return $self->response->throwJson(array("code" => 0, "data" => "非法请求！已屏蔽！"));
     }
     /* sql注入校验 */
-    if (!preg_match('/^[agree|disagree]+$/', $type)) {
+    if (!preg_match('/^(agree|disagree)$/', $type)) {
         return $self->response->throwJson(array("code" => 0, "data" => "非法请求！已屏蔽！"));
     }
     $db = Typecho_Db::get();
     $row = $db->fetchRow($db->select('agree')->from('table.contents')->where('cid = ?', $cid));
-    if (sizeof($row) > 0) {
+    if (!empty($row) && isset($row['agree'])) {
         if ($type === "agree") {
-            $db->query($db->update('table.contents')->rows(array('agree' => (int)$row['agree'] + 1))->where('cid = ?', $cid));
+            $db->query($db->update('table.contents')->rows(array('agree' => (int)($row['agree'] ?? 0) + 1))->where('cid = ?', $cid));
         } else {
-            $db->query($db->update('table.contents')->rows(array('agree' => (int)$row['agree'] - 1))->where('cid = ?', $cid));
+            $db->query($db->update('table.contents')->rows(array('agree' => max(0, (int)($row['agree'] ?? 0) - 1)))->where('cid = ?', $cid));
         }
+        $result = $db->fetchRow($db->select('agree')->from('table.contents')->where('cid = ?', $cid));
         $self->response->throwJson(array(
             "code" => 1,
-            "data" => array('agree' => number_format($db->fetchRow($db->select('agree')->from('table.contents')->where('cid = ?', $cid))['agree']))
+            "data" => array('agree' => number_format($result['agree'] ?? 0))
         ));
     } else {
         $self->response->throwJson(array("code" => 0, "data" => null));
@@ -224,7 +242,7 @@ function _getArticleFiling($self)
     $page = $self->request->page;
     $pageSize = 8;
     if (!preg_match('/^\d+$/', $page)) return $self->response->throwJson(array("data" => "非法请求！已屏蔽！"));
-    if ($page == 0) $page = 1;
+    if ((int)$page === 0) $page = 1;
     $offset = $pageSize * ($page - 1);
     $time = time();
     $db = Typecho_Db::get();

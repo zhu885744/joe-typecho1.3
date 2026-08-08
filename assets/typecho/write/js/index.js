@@ -18,15 +18,22 @@ class Joe extends JoeAction {
 	constructor() {
 		super();
 		this.plugins = [classHighlightStyle, history(), bracketMatching(), closeBrackets(), drawSelection(), highlightActiveLine(), lineNumbers(), highlightActiveLineGutter(), highlightSelectionMatches()];
+		// 修复1：Tab 快捷键加入 composing 判断
 		this.keymaps = [
 			{
 				key: 'Tab',
-				run: ({ state, dispatch }) => {
-					if (state.selection.ranges.some(r => !r.empty)) return indentMore({ state, dispatch });
+				run: (view) => {
+					// 正在输入中文/输入法组合时，放行按键，不拦截
+					if (view.composing) return false;
+					const { state, dispatch } = view;
+					if (state.selection.ranges.some(r => !r.empty)) return indentMore(view);
 					dispatch(state.update(state.replaceSelection('  ')));
 					return true;
 				},
-				shift: indentLess
+				shift: (view) => {
+					if (view.composing) return false;
+					return indentLess(view);
+				}
 			}
 		];
 		this._isPasting = false;
@@ -70,7 +77,27 @@ class Joe extends JoeAction {
 						base: markdownLanguage,
 						codeLanguages: languages
 					}),
-					keymap.of([...this.keymaps, ...defaultKeymap, ...commentKeymap, ...historyKeymap, ...closeBracketsKeymap,]),
+					// 修复2：遍历自定义快捷键，全部增加输入法过滤
+					keymap.of([
+						...this.keymaps.map(item => {
+							const newItem = { ...item };
+							// 包装普通按下逻辑
+							if (typeof newItem.run === 'function') {
+								const originRun = newItem.run;
+								newItem.run = view => view.composing ? false : originRun(view);
+							}
+							// 包装shift按下逻辑
+							if (typeof newItem.shift === 'function') {
+								const originShift = newItem.shift;
+								newItem.shift = view => view.composing ? false : originShift(view);
+							}
+							return newItem;
+						}),
+						...defaultKeymap,
+						...commentKeymap,
+						...historyKeymap,
+						...closeBracketsKeymap,
+					]),
 					EditorView.updateListener.of(update => {
 						if (!update.docChanged) return;
 						if (_temp !== update.state.doc.toString()) {

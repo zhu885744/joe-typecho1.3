@@ -2,7 +2,7 @@
 /* 获取主题当前版本号 */
 function _getVersion()
 {
-  return "7.7.4";
+  return "7.7.5";
 };
 
 /* 获取资源路径 */
@@ -150,18 +150,17 @@ function _getAgree($item, $type = true)
   else return number_format($agree);
 }
 
-/* 页面开始计时 - 使用静态变量替代全局变量 */
+/* 页面开始计时 */
 function _startCountTime()
 {
-  static $timeStart = null;
   $mTime = explode(' ', microtime());
   $timeStart = $mTime[1] + $mTime[0];
-  // 将时间存储在静态变量中供_endCountTime使用
+  // 将时间存储在全局变量中供_endCountTime使用
   $GLOBALS['_joe_time_start'] = $timeStart;
   return true;
 }
 
-/* 页面结束计时 - 使用静态变量 */
+/* 页面结束计时 */
 function _endCountTime($precision = 3)
 {
   $timeStart = $GLOBALS['_joe_time_start'] ?? 0;

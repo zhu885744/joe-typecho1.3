@@ -81,7 +81,7 @@ function themeConfig($form)
       'on' => '开启（默认）',
       'off' => '关闭'
     ),
-    '3',
+    'on',
     '开启或关闭全站评论',
     '介绍：用于一键开启关闭所有页面的评论 <br>
          注意：此处的权重优先级最高 <br>
@@ -715,6 +715,23 @@ function themeConfig($form)
   );
   $JIndex_Notice->setAttribute('class', 'joe_content joe_index');
   $form->addInput($JIndex_Notice);
+
+  $JIndex_Pagination_Mode = new Typecho_Widget_Helper_Form_Element_Select(
+    'JIndex_Pagination_Mode',
+    array(
+      'loadmore' => '查看更多按钮（默认）',
+      'numeric' => '数字分页导航',
+      'both' => '两者同时显示'
+    ),
+    'loadmore',
+    '首页列表分页方式',
+    '介绍：用于选择首页文章列表的分页方式 <br />
+         查看更多按钮：点击按钮加载更多文章（原默认方式）<br />
+         数字分页导航：显示传统的页码分页导航<br />
+         两者同时显示：同时显示查看更多按钮和数字分页导航'
+  );
+  $JIndex_Pagination_Mode->setAttribute('class', 'joe_content joe_index');
+  $form->addInput($JIndex_Pagination_Mode->multiMode());
 
   $JFriends = new Typecho_Widget_Helper_Form_Element_Textarea(
     'JFriends',
